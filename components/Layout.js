@@ -7,7 +7,7 @@ export default function Layout({ children }) {
         <header>
           <nav className="flex h-12 item-center justify-between shadow-md px-4 py-2">
             <Link href="/" legacyBehavior>
-              <a className="text-lg font-bold">Unboxed</a>
+              <a className="text-lg font-bold">UnBoxed</a>
             </Link>
             <div>
               <Link href="/cart" legacyBehavior>
