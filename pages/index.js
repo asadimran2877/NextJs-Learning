@@ -1,14 +1,9 @@
-import Navabar from "@/components/Navabar";
-import Home from "@/pages/home/index";
-import Contact from "@/pages/Contact";
-import About from "@/components/About";
+import React from 'react';
+
 const index = () => {
   return (
     <div>
-      <Navabar />
-      <Home />
-      <Contact />
-      <About />
+      <h1 className="text-3xl font-bold">Hello world its ecommerce</h1>
     </div>
   );
 };
