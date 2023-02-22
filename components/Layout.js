@@ -5,8 +5,11 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import CartScreen from '@/pages/cart';
 import { ToastContainer } from 'react-toastify';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import 'react-toastify/dist/ReactToastify.css';
+import { Menu } from '@headlessui/react';
+import DropDownLink from './DropDownLink';
+import Cookies from 'js-cookie';
 export default function Layout({ children }) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
@@ -15,6 +18,12 @@ export default function Layout({ children }) {
   useEffect(() => {
     setcartitemscount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
   }, [cart.cartItems]);
+
+  const logoutClickHandler = () => {
+    Cookies.remove('cart');
+    dispatch({ type: 'CART_RESET' });
+    signOut({ callbackUrl: '/login' });
+  };
   return (
     <>
       <ToastContainer position="bottom-center" limit={1} />
@@ -39,7 +48,35 @@ export default function Layout({ children }) {
               {status === 'loading' ? (
                 'Loading'
               ) : session?.user ? (
-                session.user.name
+                <Menu as="div" className="relative inline-block">
+                  <Menu.Button className="text-blue-600">
+                    {session.user.name}
+                  </Menu.Button>
+                  <Menu.Items className="absolute right-0 w-56 origin-top-right shadow-lg bg-white">
+                    <Menu.Item>
+                      <DropDownLink className="dropdown-link" href="/profile">
+                        Profile
+                      </DropDownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <DropDownLink
+                        className="dropdown-link"
+                        href="/order-history"
+                      >
+                        Order History
+                      </DropDownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <a
+                        className="dropdown-link"
+                        href="#"
+                        onClick={logoutClickHandler}
+                      >
+                        Logout
+                      </a>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Menu>
               ) : (
                 <Link href="/login" legacyBehavior>
                   <a className="p-2">Login</a>
